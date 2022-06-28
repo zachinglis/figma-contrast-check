@@ -1,0 +1,11 @@
+{
+  "name": "Contrast Check",
+  "id": "1123669584321839030",
+  "api": "1.0.0",
+  "main": "code.js",
+  "editorType": [
+    "figma"
+  ],
+  "containsWidget": true,
+  "widgetApi": "1.0.0"
+}
