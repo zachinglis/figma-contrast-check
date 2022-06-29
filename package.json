@@ -1,12 +1,12 @@
 {
-  "name": "Contrast-Check",
+  "name": "figma_widget_contrast_check",
   "version": "1.0.0",
-  "description": "Your Figma widget",
+  "description": "Contrast Check figma widget",
   "main": "code.js",
   "scripts": {
     "build": "tsc -p tsconfig.json"
   },
-  "author": "",
+  "author": "Zach Inglis",
   "license": "",
   "devDependencies": {
     "@figma/plugin-typings": "*",
