@@ -230,8 +230,13 @@ function Widget() {
 
   //#region Widget - currentColor
   function updateForegroundColor({ characters }: TextEditEvent) {
+    let fgColor = characters
+
+    if(!fgColor.includes('#'))
+      fgColor = "#" + fgColor
+
     setPassOrFail({
-      foregroundColor: characters
+      foregroundColor: fgColor
     })
     closeSettings()
   }
