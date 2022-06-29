@@ -10,7 +10,8 @@ Click the widget to input the foreground color. The background color is inferred
 
 To build run `npm run build`
 
-## Future Plans
+## Future Plans & Wants
+- Recalculates when moved to a new frame
 - Close Pass / Close Fail
 
 ## Authors
