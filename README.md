@@ -2,6 +2,8 @@
 
 A simple contrast checker widget to put in to your styleguides.
 
+[Figma Plugin]:(https://www.figma.com/community/widget/1123669584321839030/Contrast-Checker---Easy-testing)
+
 Click the widget to input the foreground color. The background color is inferred by the parent frame. There are options to test against: AA, AAA, Large Text, Normal Text.
 
 (This was a quick and dirty plugin built in a day. So please excuse anything that's not perfect and feel free to make PRs.) It definitely needs a refactor and cleanup.
