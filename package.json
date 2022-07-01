@@ -1,16 +1,22 @@
 {
   "name": "figma_widget_contrast_check",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Contrast Check figma widget",
   "main": "code.js",
   "scripts": {
-    "build": "tsc -p tsconfig.json"
+    "test": "tsc -p src --noEmit",
+    "build": "esbuild src/code.tsx --bundle --outfile=dist/code.js",
+    "dev": "concurrently -n tsc,build 'npm run test -- --preserveWatchOutput --watch' 'npm run build -- --watch'"
   },
   "author": "Zach Inglis",
-  "license": "",
+  "license": "MIT License",
   "devDependencies": {
     "@figma/plugin-typings": "*",
     "@figma/widget-typings": "*",
-    "typescript": "*"
+    "concurrently": "^7.2.2",
+    "esbuild": "^0.14.48"
+  },
+  "dependencies": {
+    "typescript": "^4.7.4"
   }
 }

@@ -1,24 +1,10 @@
-// Large
-// Min: 18.6px + bold and heavier
-// Or, Min: 24px
-// Normal is else
-
-const ratiosToCompare = {
-  'AA': {
-    large: 1/3,
-    normal: 1/4.5,
-  },
-  'AAA': {
-    large: 1/4.5,
-    normal: 1/7,
-  },
-}
-
 interface checkContrastArgs {
   foregroundColor?: string
   ratioLevel?: string
   fontSize?: string
 }
+
+import {RGBToHex, getCurrentRatio, doesPass } from './lib/color'
 
 const { widget, notify } = figma
 const { useSyncedState, usePropertyMenu, AutoLayout, Rectangle, SVG, Text, Input, useWidgetId } = widget
@@ -38,54 +24,7 @@ function Widget() {
   const id = useWidgetId()
   //#endregion
   //#region Helper methods - Colors & Contrast
-  function normalisedRGB(rgb: RGB): RGB {
-    return {
-      r: Math.round(rgb.r * 255),
-      g: Math.round(rgb.g * 255),
-      b: Math.round(rgb.b * 255),
-    }
-  }
 
-  function luminance(rgb: RGB) {
-    const [r, g, b] = [rgb.r, rgb.g, rgb.b].map((v) => {
-        v /= 255;
-        return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
-    });
-    return r * 0.2126 + g * 0.7152 + b * 0.0722;
-  };
-
-  function contrast(colorA: RGB, colorB: RGB) {
-    const foregroundLumiance = luminance(colorA);
-    const backgroundLuminance = luminance(colorB);
-    return backgroundLuminance < foregroundLumiance
-        ? ((backgroundLuminance + 0.05) / (foregroundLumiance + 0.05))
-        : ((foregroundLumiance + 0.05) / (backgroundLuminance + 0.05));
-  };
-
-  function HexToRGB(hex: string): RGB {
-    hex = hex.slice(1);
-    const value = parseInt(hex, 16);
-    const r = (value >> 16) & 255;
-    const g = (value >> 8) & 255;
-    const b = value & 255;
-    return { r, g, b };
-  };
-
-  function RGBToHex(rgb: RGB): string {
-    let normalised = normalisedRGB(rgb)
-    let r = normalised.r.toString(16);
-    let g = normalised.g.toString(16);
-    let b = normalised.b.toString(16);
-  
-    if (r.length == 1)
-      r = "0" + r;
-    if (g.length == 1)
-      g = "0" + g;
-    if (b.length == 1)
-      b = "0" + b;
-  
-    return "#" + r + g + b;
-  }
   //#endregion
   //#region Helper methods - Nodes
   function getParentFrame(node: WidgetNode): FrameNode | undefined {
@@ -119,19 +58,6 @@ function Widget() {
     return RGBToHex(fill.color)
   }
   //#endregion
-  
-  function getCurrentRatio(fgColor: string, bgColor:string):number {
-    const ratioContrast = contrast(
-      HexToRGB(fgColor), 
-      HexToRGB(bgColor)
-    )
-    return ratioContrast
-  }
-
-  function doesPass(ratio: number, ratioLevel: string, fontSize:string):boolean {
-    const passRatio:number = ratiosToCompare[ratioLevel][fontSize]
-    return ratio < passRatio
-  }
 
   function setPassOrFail(args: checkContrastArgs = {}) {
     const node = figma.getNodeById(id) as WidgetNode
