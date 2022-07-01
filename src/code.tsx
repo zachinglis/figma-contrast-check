@@ -179,21 +179,21 @@ function Widget() {
   let widgetPadding: WidgetJSX.Padding = { horizontal: 16, vertical: 8 }
   let widgetSpacing: number = 12
   let widgetWidth: WidgetJSX.Size = 200
-  let widgetHeight: WidgetJSX.Size = 40
+  let widgetHeight: WidgetJSX.Size = 48
   let borderColor = "#e4e4e4"
   if(optionSize === 'tiny') {
     widgetFontSize = 14
     widgetSpacing = 8
     widgetPadding = 0
     widgetHeight = 34
-    widgetWidth = 100
+    widgetWidth = 80
   }
   if(optionSize == 'small') {
-    widgetFontSize = 16
-    widgetSpacing = 4
+    widgetFontSize = 18
+    widgetSpacing = 8
     widgetHeight = 40
     widgetWidth = 100
-    widgetPadding = { horizontal: 4, vertical: 0 }
+    widgetPadding = { horizontal: 8, vertical: 2 }
   }
   const widgetBg = "#ffffff"
   const widgetFg = "#000000"
@@ -201,33 +201,45 @@ function Widget() {
 
   return (
     <AutoLayout
+      name='Container'
       fill={widgetBg}
       height={widgetHeight}
       width={widgetWidth}
       stroke={borderColor}
       strokeWidth={1}
-      strokeAlign="outside"
+      strokeAlign='outside'
       cornerRadius={8}
     >
       <Rectangle
+        name='Foreground Color'
         height={widgetHeight}
         fill={foregroundColor}
         stroke={borderColor}
         strokeWidth={1}
-        strokeAlign="outside"
+        strokeAlign='outside'
         width={10} />
       <AutoLayout
+        name='Wrapper'
         height={widgetHeight}
         width={widgetWidth - 10}
         spacing={widgetSpacing}
-        horizontalAlignItems={settingsOpened ? 'end' : 'center'}
+        padding={widgetPadding}
+        horizontalAlignItems={settingsOpened ? 'start' : 'center'}
         verticalAlignItems='center'
       >
         {settingsOpened && (
-          <Input 
+          <Input
+            name='Foreground Input'
             placeholder="#000000"
+            horizontalAlignText='left'
+            inputFrameProps={{
+              name: "Input Container",
+              padding: {
+                left: widgetSpacing / 2,
+              },
+            }}
             value={foregroundColor}
-            width={widgetWidth * 0.8}
+            width={widgetWidth - 10}
             height={widgetHeight}
             verticalAlignText='center'
             fill={widgetFg}
@@ -238,26 +250,29 @@ function Widget() {
           <>
             {passes === 'true' && (
               <AutoLayout
+                name='Pass'
                 horizontalAlignItems='center'
                 verticalAlignItems='center'
                 spacing={widgetSpacing / 2}
               >
                 <Text fill={widgetFg} fontWeight="bold" fontSize={widgetFontSize}>Pass</Text>
-                <SVG src={`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18"><path fill="#12C219" d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-.997-6l7.07-7.071-1.414-1.414-5.656 5.657-2.829-2.829-1.414 1.414L11.003 16z"/></svg>`} />
+                <SVG name="Icon: Pass" src={`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18"><path fill="#12C219" d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-.997-6l7.07-7.071-1.414-1.414-5.656 5.657-2.829-2.829-1.414 1.414L11.003 16z"/></svg>`} />
               </AutoLayout>
             )}
             {passes !== 'true' && (
               <AutoLayout
+                name='Fail'
                 horizontalAlignItems='center'
                 verticalAlignItems='center'
                 spacing={widgetSpacing / 2}
               >
-                <Text fill={widgetFg} fontWeight="bold" fontSize={widgetFontSize}>Fail</Text>
-                <SVG src={`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20"><path fill="#C21212" d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-11.414L9.172 7.757 7.757 9.172 10.586 12l-2.829 2.828 1.415 1.415L12 13.414l2.828 2.829 1.415-1.415L13.414 12l2.829-2.828-1.415-1.415L12 10.586z"/></svg>`} />
+                <Text fill={widgetFg} fontWeight='bold' fontSize={widgetFontSize}>Fail</Text>
+                <SVG name="Icon: Fail"
+                src={`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20"><path fill="#C21212" d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-11.414L9.172 7.757 7.757 9.172 10.586 12l-2.829 2.828 1.415 1.415L12 13.414l2.828 2.829 1.415-1.415L13.414 12l2.829-2.828-1.415-1.415L12 10.586z"/></svg>`} />
               </AutoLayout>
             )}
             {optionSize === 'large' && (
-              <Text verticalAlignText="bottom" height={24} fill="#505050" fontSize={widgetFontSize * 0.8}>({ prettyRatio })</Text>
+              <Text name='Ratio' verticalAlignText='bottom' height={24} fill='#505050' fontSize={widgetFontSize * 0.8}>({ prettyRatio })</Text>
             )}
           </>
         )}
