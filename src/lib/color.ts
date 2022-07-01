@@ -61,3 +61,13 @@ export function doesPass(ratio: number, ratioLevel: string, fontSize:string):boo
   const passRatio:number = ratiosToCompare[ratioLevel][fontSize]
   return ratio < passRatio
 }
+
+export function toPrettyRatio(ratio:number): string {
+  const factor =  1 / ratio
+  let factorFixed = factor.toFixed(1)
+
+  if(factorFixed.includes(".0"))
+    factorFixed = factorFixed.replace(".0", "")
+
+  return `${factorFixed}:1`
+}

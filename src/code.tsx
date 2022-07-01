@@ -4,7 +4,7 @@ interface checkContrastArgs {
   fontSize?: string
 }
 
-import {RGBToHex, getCurrentRatio, doesPass } from './lib/color'
+import { RGBToHex, getCurrentRatio, doesPass, toPrettyRatio } from './lib/color'
 
 const { widget, notify } = figma
 const { useSyncedState, usePropertyMenu, AutoLayout, Rectangle, SVG, Text, Input, useWidgetId } = widget
@@ -14,6 +14,7 @@ function Widget() {
   const [foregroundColor, setForegroundColor] = useSyncedState('foregroundColor', '#000000')
   const [backgroundColor, setBackgroundColor] = useSyncedState('parentColor', '#ffffff')
   const [ratio, setRatio] = useSyncedState('ratio', '0')
+  const [prettyRatio, setPrettyRatio] = useSyncedState('prettyRatio', '21:1')
   const [passes, setPasses] = useSyncedState('passes', 'false')
 
   const [optionRatioLevel, setOptionRatioLevel] = useSyncedState('optinRatioLevel', 'AA')
@@ -75,9 +76,11 @@ function Widget() {
     if(args.foregroundColor) setForegroundColor(fgColor)
     setBackgroundColor(backgroundColor)
     setRatio(String(newRatio))
+    const newPrettyRatio = toPrettyRatio(newRatio)
+    setPrettyRatio(newPrettyRatio)
     setPasses(String(newValidity))
 
-    node.name = `Contrast Checker (${newValidity === true ? 'PASS' : 'FAIL'})`
+    node.name = `Contrast Checker (${newValidity === true ? 'PASS' : 'FAIL'} / ${newPrettyRatio})`
   }
 
   //#region Settings
@@ -175,8 +178,9 @@ function Widget() {
   let widgetFontSize: number = 22
   let widgetPadding: WidgetJSX.Padding = { horizontal: 16, vertical: 8 }
   let widgetSpacing: number = 12
-  let widgetWidth: WidgetJSX.Size = 140
+  let widgetWidth: WidgetJSX.Size = 200
   let widgetHeight: WidgetJSX.Size = 40
+  let borderColor = "#e4e4e4"
   if(optionSize === 'tiny') {
     widgetFontSize = 14
     widgetSpacing = 8
@@ -200,12 +204,15 @@ function Widget() {
       fill={widgetBg}
       height={widgetHeight}
       width={widgetWidth}
+      stroke={borderColor}
+      strokeWidth={1}
+      strokeAlign="outside"
       cornerRadius={8}
     >
       <Rectangle
         height={widgetHeight}
         fill={foregroundColor}
-        stroke="#e4e4e4"
+        stroke={borderColor}
         strokeWidth={1}
         strokeAlign="outside"
         width={10} />
@@ -248,6 +255,9 @@ function Widget() {
                 <Text fill={widgetFg} fontWeight="bold" fontSize={widgetFontSize}>Fail</Text>
                 <SVG src={`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20"><path fill="#C21212" d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-11.414L9.172 7.757 7.757 9.172 10.586 12l-2.829 2.828 1.415 1.415L12 13.414l2.828 2.829 1.415-1.415L13.414 12l2.829-2.828-1.415-1.415L12 10.586z"/></svg>`} />
               </AutoLayout>
+            )}
+            {optionSize === 'large' && (
+              <Text verticalAlignText="bottom" height={24} fill="#505050" fontSize={widgetFontSize * 0.8}>({ prettyRatio })</Text>
             )}
           </>
         )}
