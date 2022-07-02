@@ -42,17 +42,17 @@ function Widget() {
     const parent = getParentFrame(node)
 
     if(!parent) {
-      notify("Widget must be inside a frame")
+      notify("Widget must be inside a frame", { error: true })
       return
     }
 
     const fill = parent.fills[0]
     if(fill === undefined) {
-      notify("Parent frame needs a fill")
+      notify("Parent frame needs a fill", { error: true })
       return
     }
     if(fill.type !== 'SOLID') {
-      notify("Parent frame fill is not a solid color")
+      notify("Parent frame fill is not a solid color", { error: true })
       return
     }
   
@@ -73,14 +73,14 @@ function Widget() {
     const newRatio = getCurrentRatio(fgColor, bgColor)
     const newValidity = doesPass(newRatio, ratioLevel, fontSize)
 
-    if(args.foregroundColor) setForegroundColor(fgColor)
-    setBackgroundColor(backgroundColor)
-    setRatio(String(newRatio))
-    const newPrettyRatio = toPrettyRatio(newRatio)
-    setPrettyRatio(newPrettyRatio)
-    setPasses(String(newValidity))
+    // if(args.foregroundColor) setForegroundColor(fgColor)
+    // setBackgroundColor(backgroundColor)
+    // setRatio(String(newRatio))
+    // const newPrettyRatio = toPrettyRatio(newRatio)
+    // setPrettyRatio(newPrettyRatio)
+    // setPasses(String(newValidity))
 
-    node.name = `Contrast Checker (${newValidity === true ? 'PASS' : 'FAIL'} / ${newPrettyRatio})`
+    // node.name = `Contrast Checker (${newValidity === true ? 'PASS' : 'FAIL'} / ${newPrettyRatio})`
   }
 
   //#region Settings
