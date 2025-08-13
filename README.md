@@ -1,3 +1,5 @@
+**[Deprecated: They integrated good contrast tooling into their app.]**
+
 # Constrast Check
 
 A simple contrast checker widget to put in to your styleguides.
